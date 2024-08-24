@@ -38,13 +38,30 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-  const morseSigns = {
-    0: " ",
-    10: ".",
-    11: "-",
-  };
+  let translated = "";
+  let letter = "";
+  let morse = "";
 
-  let translated = [];
+  for (let i = 0; i < expr.length; i += 10) {
+    letter = expr.slice(i, i + 10);
+    if (letter === "**********") {
+      translated += " ";
+      continue;
+    }
+
+    for (let x = 0; x < 10; x += 2) {
+      let pair = letter.slice(x, x + 2);
+      if (pair === "10") {
+        morse += ".";
+      }
+      if (pair === "11") {
+        morse += "-";
+      }
+    }
+    translated += MORSE_TABLE[morse];
+    morse = "";
+  }
+  return translated;
 }
 
 module.exports = {
